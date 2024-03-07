@@ -9,6 +9,9 @@ Classes:
     - Task: Represents a task in the company.
     - ManagementSystem: Provides functionality to manage employees, projects, and tasks.
 """
+from employee import Employee
+from project import Project
+from task import Task
 
 class ManagementSystem:
     """
@@ -24,7 +27,9 @@ class ManagementSystem:
         """
         Initialize a ManagementSystem object.
         """
-        pass
+        self.employees:list[Employee] = []
+        self.projects:list[Project] = []
+        self.tasks:list[Task] = []
 
     def add_employee(self, employee):
         """
@@ -33,7 +38,7 @@ class ManagementSystem:
         Args:
             employee (Employee): The employee to be added.
         """
-        pass
+        self.employees.append(employee)
 
     def remove_employee(self, emp_id):
         """
@@ -42,7 +47,8 @@ class ManagementSystem:
         Args:
             emp_id (str): The ID of the employee to be removed.
         """
-        pass
+        self.employees = [employee for employee in self.employees if employee.emp_id is not emp_id]
+        # works to remove multiple employees with the same emp_id
 
     def add_project(self, project):
         """
@@ -51,7 +57,7 @@ class ManagementSystem:
         Args:
             project (Project): The project to be added.
         """
-        pass
+        self.projects.append(project)
 
     def add_task(self, task):
         """
@@ -60,7 +66,7 @@ class ManagementSystem:
         Args:
             task (Task): The task to be added.
         """
-        pass
+        self.tasks.append(task)
 
     def assign_employee_to_project(self, emp_id, project_id):
         """
@@ -73,4 +79,13 @@ class ManagementSystem:
         Raises:
             ValueError: If employee or project is not found.
         """
-        pass
+        found = False
+        for proj in self.projects:
+            if proj.project_id == project_id:
+                for emp in self.employees:
+                    if emp.emp_id == emp_id:
+                        found = True
+                        proj.assign_employee(emp)
+        if not found:
+            raise ValueError
+
